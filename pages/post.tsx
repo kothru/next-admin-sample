@@ -59,7 +59,12 @@ const Post: React.FC<Props> = (props) => {
         {props.feed.map((post) => (
           <Table.Row key={post.id}>
             <Table.Cell>{post.title}</Table.Cell>
-            <Table.Cell>{post.author !== null ? <Col><Row>{post.author.name}</Row><Row>{post.author.email}</Row></Col> : ''}</Table.Cell>
+            <Table.Cell>
+              <Col>
+                <Row>{post.author?.name}</Row>
+                <Row>{post.author?.email}</Row>
+              </Col>
+            </Table.Cell>
             <Table.Cell>{post.content}</Table.Cell>
           </Table.Row>
         ))}
