@@ -16,17 +16,32 @@ const handler: NextApiHandler = async (req, res) => {
   const users = await csvParser<User>(file, headerDefs)
   console.log(users);
 
+  // https://www.prisma.io/docs/concepts/components/prisma-client/crud#delete-all-records-from-all-tables
+  await prisma.user.deleteMany()
+  // await prisma.$executeRaw`TRUNCATE TABLE User CASCADE;`
+
   // createMany is not supported by SQLite
   // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
 
-  users.forEach(async (user) => {
-    const result = await prisma.user.create({
+  for (const user of users) {
+    await prisma.user.create({
       data: {
         name: user.name,
         email: user.email
       }
     });
-  })
+  }
+
+  // await Promise.all(
+  //   users.map(async (user) => {
+  //     await prisma.user.create({
+  //       data: {
+  //         name: user.name,
+  //         email: user.email
+  //       }
+  //     });
+  //   })
+  // )
 
   res.json({
     ok: true,

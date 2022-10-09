@@ -15,3 +15,12 @@ npx prisma migrate dev
 
 npm run dev
 open http://localhost:3000
+
+
+## note
+
+if you change prisma schema, make migrate like below
+
+npx prisma migrate dev --name {some_name}
+
+https://www.prisma.io/docs/concepts/components/prisma-migrate/get-started

@@ -8,7 +8,7 @@ import { User } from "@prisma/client";
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const users = await prisma.user.findMany({
-    orderBy: [{ id: 'asc' }]
+    orderBy: [{ email: 'asc' }]
   });
   return {
     props: { users },
