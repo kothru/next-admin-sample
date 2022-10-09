@@ -14,20 +14,19 @@ const handler: NextApiHandler = async (req, res) => {
   const file = selector(data, "file")
   const headerDefs = await loadHeaderDefs("user")
   const users = await csvParser<User>(file, headerDefs)
+  console.log(users);
 
   // createMany is not supported by SQLite
   // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
 
-  // users.forEach(async (user) => {
-  //   const result = await prisma.user.create({
-  //     data: {
-  //       name: user.name,
-  //       email: user.email
-  //     }
-  //   });
-  // })
-
-  console.log(users);
+  users.forEach(async (user) => {
+    const result = await prisma.user.create({
+      data: {
+        name: user.name,
+        email: user.email
+      }
+    });
+  })
 
   res.json({
     ok: true,

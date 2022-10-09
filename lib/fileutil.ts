@@ -2,6 +2,7 @@ import type { NextApiRequest } from "next";
 import * as formidable from "formidable";
 import fs from "node:fs/promises";
 import Papa from "papaparse";
+import jsYaml from "js-yaml"
 
 type FormidableParseData = {
   fields: formidable.Fields,
@@ -31,14 +32,20 @@ export function selector(data: FormidableParseData, name: string) {
   }
 }
 
-export async function csvParser<T>(file: formidable.File) {
+export async function loadHeaderDefs(modelname: string) {
+  const defContents = await fs.readFile(`./const/csvheader/${modelname}.yaml`, 'utf8');
+  return jsYaml.load(defContents) as string[]
+}
+
+export async function csvParser<T>(file: formidable.File, headerDefs: string[]) {
   const fileContents = await fs.readFile(file.filepath, 'utf8');
   const result = Papa.parse<T>(fileContents, {
     header: true,
     transformHeader: (header, index) => {
-      console.log(header);
-      console.log(index);
-      return `${header}${index}`
+      if (headerDefs.length == 0) {
+        return header
+      }
+      return headerDefs[index]
     }
   });
   if (result.errors.length > 0) {
