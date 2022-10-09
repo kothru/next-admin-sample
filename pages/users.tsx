@@ -38,7 +38,9 @@ const Upload: React.FC<Props> = (props) => {
       router.reload();
     } else {
       alert(JSON.stringify(response));
+      router.push("/");
     }
+    return false
   };
 
   return (
