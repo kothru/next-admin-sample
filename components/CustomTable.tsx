@@ -1,15 +1,13 @@
 import { AdminPages } from "../const/const";
 import { Table } from "@nextui-org/react";
 
-type StringKeyObject = {
-  [key: string]: any;
-}
+type StringKeyObject = Record<string, any>
 
-type TableProps<StringKeyObject> = {
-  rows: StringKeyObject[],
+type TableProps<T extends StringKeyObject> = {
+  rows: T[],
   tablename: AdminPages,
-  keycol: string,
-  cols: string[]
+  keycol: keyof T,
+  cols: (keyof T)[]
 };
 
 const CustomTable = <T extends StringKeyObject,>(props: TableProps<T>) => {
@@ -17,8 +15,9 @@ const CustomTable = <T extends StringKeyObject,>(props: TableProps<T>) => {
     <Table aria-label={props.tablename + " table"}>
       <Table.Header>
         {props.cols.map((col) => {
+          const colstr = col as string
           return (
-            <Table.Column key={col}>{col}</Table.Column>
+            <Table.Column key={colstr}>{colstr}</Table.Column>
           )
         })}
       </Table.Header>
@@ -26,8 +25,9 @@ const CustomTable = <T extends StringKeyObject,>(props: TableProps<T>) => {
         {props.rows.map((row) => (
           <Table.Row key={row[props.keycol]}>
             {props.cols.map((col) => {
+              const colstr = col as string
               return (
-                <Table.Cell key={col}>{row[col]}</Table.Cell>
+                <Table.Cell key={colstr}>{row[colstr]}</Table.Cell>
               )
             })}
           </Table.Row>
