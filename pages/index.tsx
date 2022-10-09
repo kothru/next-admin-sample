@@ -1,9 +1,15 @@
 import type { NextPage } from 'next'
+import Link from 'next/link'
 import Head from 'next/head'
 import Image from 'next/image'
 import styles from '../styles/Home.module.css'
+import { Button } from "@nextui-org/react";
+import { useRouter } from "next/router";
+import { MouseEventHandler } from 'react'
 
 const Home: NextPage = () => {
+  const router = useRouter();
+
   return (
     <div className={styles.container}>
       <Head>
@@ -13,6 +19,8 @@ const Home: NextPage = () => {
       </Head>
 
       <main className={styles.main}>
+        <Button onClick={() => router.push("/upload")}>Upload</Button>
+
         <h1 className={styles.title}>
           Welcome to <a href="https://nextjs.org">Next.js!</a>
         </h1>
