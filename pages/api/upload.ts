@@ -17,14 +17,14 @@ const handler: NextApiHandler = async (req, res) => {
   // createMany is not supported by SQLite
   // https://www.prisma.io/docs/reference/api-reference/prisma-client-reference#createmany
 
-  users.forEach(async (user) => {
-    const result = await prisma.user.create({
-      data: {
-        name: user.name,
-        email: user.email
-      }
-    });
-  })
+  // users.forEach(async (user) => {
+  //   const result = await prisma.user.create({
+  //     data: {
+  //       name: user.name,
+  //       email: user.email
+  //     }
+  //   });
+  // })
 
   console.log(users);
 

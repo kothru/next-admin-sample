@@ -34,7 +34,12 @@ export function selector(data: FormidableParseData, name: string) {
 export async function csvParser<T>(file: formidable.File) {
   const fileContents = await fs.readFile(file.filepath, 'utf8');
   const result = Papa.parse<T>(fileContents, {
-    header: true
+    header: true,
+    transformHeader: (header, index) => {
+      console.log(header);
+      console.log(index);
+      return `${header}${index}`
+    }
   });
   if (result.errors.length > 0) {
     console.log(result.errors);
