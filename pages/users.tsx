@@ -2,11 +2,11 @@ import styles from '../styles/Home.module.css'
 import type { GetServerSideProps } from "next";
 import { useRouter } from "next/router";
 import { prisma } from '../lib/prisma'
-import { Table } from "@nextui-org/react";
 import { User } from "@prisma/client";
 import { uploadFile } from '../lib/client';
 import CustomNavBar from '../components/CustomNavbar';
 import CustomHeader from '../components/CustomHeader';
+import CustomTable from '../components/CustomTable';
 
 export const getServerSideProps: GetServerSideProps = async () => {
   const users = await prisma.user.findMany({
@@ -44,20 +44,7 @@ const Upload: React.FC<Props> = (props) => {
         Choose file
       </label>
 
-      <Table aria-label="User table">
-        <Table.Header>
-          <Table.Column>email</Table.Column>
-          <Table.Column>name</Table.Column>
-        </Table.Header>
-        <Table.Body>
-          {props.users.map((user) => (
-            <Table.Row key={user.id}>
-              <Table.Cell>{user.email}</Table.Cell>
-              <Table.Cell>{user.name}</Table.Cell>
-            </Table.Row>
-          ))}
-        </Table.Body>
-      </Table>
+      <CustomTable<User> rows={props.users} tablename="users" keycol="id" cols={['email', 'name']}></CustomTable>
     </div >
   );
 };
