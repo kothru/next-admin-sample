@@ -1,21 +1,26 @@
 # next-admin-sample
 
+- Serve: Next.js
 - ORM: prisma
-- csv parser: papaparse
+- CSV parser: papaparse
 - UI: NextUI
+- DB: sqlite
 
 ## at first
 
+```
 npm i
 touch .env
 echo "DATABASE_URL=\"file:./dev.db\"" > .env
 npx prisma migrate dev
+```
 
 ## serve
 
+```
 npm run dev
 open http://localhost:3000
-
+```
 
 ## note
 
