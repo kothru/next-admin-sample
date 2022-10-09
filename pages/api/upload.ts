@@ -2,7 +2,7 @@ import type { NextApiHandler } from "next";
 import { prisma } from "../../lib/prisma";
 import * as z from "zod";
 import * as formidable from "formidable";
-import * as fs from 'fs'
+import { formParser, selector, csvParser } from "../../lib/fileutil";
 
 // const requestBodySchema = z.object({
 //   email: z.string(),
@@ -15,30 +15,21 @@ export const config = {
   },
 };
 
-type FormidableParseData = {
-  fields: formidable.Fields,
-  files: formidable.Files
+type User = {
+  email: string,
+  name: string
 }
 
 const handler: NextApiHandler = async (req, res) => {
+  const data = await formParser(req)
+  const file = selector(data, "file")
+  const users = await csvParser<User>(file)
 
-  const data = await new Promise((resolve: (value: FormidableParseData) => void, reject) => {
-    const form = new formidable.IncomingForm();
-
-    form.parse(req, (err, fields: formidable.Fields, files: formidable.Files) => {
-      if (err) {
-        console.error(err)
-        reject(err)
-      }
-      resolve({ fields, files })
-    })
-  })
-
-  console.log(data);
+  console.log(users);
 
   res.json({
     ok: true,
-    data
+    users
   });
   return;
 };
